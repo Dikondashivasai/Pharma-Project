@@ -38,9 +38,6 @@ export default class GenericText extends LightningElement {
         return this.relatedType !== 'number' ? this.valueEntered?.trim().length > 0 : this.valueEnteredNum != null;
     }
     connectedCallback() {
-        // if(this.prospectType=="Repeat Projects from Existing customer (RE)" && this.labelName=="Manufacturing Component"){
-        //     this.disableInput=true;
-        // }
         if(this.isErrorFromFlow && this.labelName=="Reasons"){
         this.isRequiredField=true;  
         }
@@ -103,15 +100,26 @@ export default class GenericText extends LightningElement {
             if(message.sourceSystem=='serviceType'){
                 //this.valueEntered='';
                 this.serviceType=message.messageToSend;
-                // if(this.prospectType=="Commercial Project From Existing Customer (CE)" && message.messageToSend=='Manufacturing'){
-                //     if(this.labelName=='Unit Rate' || this.labelName=='Qty (in Kgs)'){
-                //         this.isRequiredField=true;
-                        
-                //     } 
-                if(message.messageToSend=='Manufacturing'|| this.prospectType=="Commercial Project From Existing Customer (CE)"){
+                if(message.messageToSend!='Manufacturing'&&this.prospectType =='Repeat Projects from Existing Customers (RE)'&&message.messageToSend!='undefined'&&message.messageToSend!=''&&message.messageToSend!='null'){
+                    if(this.labelName=='Unit Rate'){
+                        this.isRequiredField=false;
+                        this.disableInput=true;
+                } 
+                if(this.labelName=='Qty (in Kgs)'){
+                    this.isRequiredField=false;
+                    this.disableInput=true;
+                }  
+            }
+            else if(this.labelName=='Unit Rate' || this.labelName=='Qty (in Kgs)'){
+                this.isRequiredField=true;
+                this.disableInput=false;
+                }
+            
+                if(message.messageToSend == 'Manufacturing' ){
                     console.log('+++++++++++++'+this.prospectType)
                     if(this.labelName=='Unit Rate' || this.labelName=='Qty (in Kgs)'){
                         this.isRequiredField=true;
+                        this.disableInput=false;
                 }
                     if(this.labelName=="Total CY's Sales Expected"){
                         this.disableInput=true;

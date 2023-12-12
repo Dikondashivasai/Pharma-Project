@@ -1,4 +1,4 @@
-import { LightningElement,api,wire } from 'lwc';
+import { LightningElement,api,wire,track } from 'lwc';
 import { getPicklistValues, getObjectInfo } from 'lightning/uiObjectInfoApi';
 import calendarYear from "@salesforce/schema/Prospect__c.Calendar_Year__c";
 import { publish,subscribe,unsubscribe,createMessageContext,releaseMessageContext } from 'lightning/messageService';
@@ -43,6 +43,9 @@ export default class CalenderYear extends LightningElement {
 @api totalcy;
 @api qty;
 @api serviceType;
+@api prospectType;
+@track requiredValue;
+@track greaterErrorMessageHtml1;
 context = createMessageContext();
 @wire(getObjectInfo, { objectApiName: 'Prospect__c' })
     getObjectData({ error, data }) {
@@ -135,7 +138,7 @@ renderedCallback() {
                 q4value=true;
             }
             }
-        if(this.selectedOption==null || this.selectedOption==''|| typeof this.selectedOption=='undefined'){
+        if(this.prospectType!='Repeat Projects from Existing Customers (RE)' && (this.selectedOption==null || this.selectedOption=='' || typeof this.selectedOption=='undefined')){
             let genericCmp = this.template.querySelector('lightning-combobox');
             genericCmp.reportValidity();
          
@@ -228,7 +231,9 @@ renderedCallback() {
             
             //console.log('total--'+total);
             //console.log('this.salesexpected--'+this.salesexpected);
-            
+            if (this.salesexpected !== '' && this.salesexpected!==null && typeof this.salesexpected!=='undefined' && total !== '' && total!==null && total!=='undefined' &&  (this.selectedOption === '' || this.selectedOption==null || typeof this.selectedOption=='undefined')) {
+               this.greaterErrorMessageHtml1=true;
+            }
             if(total>this.salesexpected){
                 this.errorMessageHtml=true;
             }else{
@@ -236,7 +241,6 @@ renderedCallback() {
             }
             
             if(total<this.salesexpected){
-                
                 this.greaterErrorMessageHtml=true;
             }else{
                 this.greaterErrorMessageHtml=false;
@@ -267,6 +271,7 @@ subscribeMC() {
     });
  }
  displayMessage(message) {
+
     this.receivedMessage = message ? JSON.stringify(message, null, '\t') : 'no message payload';
     if(message.sourceSystem=='serviceType'){
         
@@ -293,35 +298,35 @@ subscribeMC() {
         this.laboratory=message.messageToSend;
     }
     
-    if(this.forecastType=='manufacturing'){
+    
         //console.log('man');
         //console.log('man'+this.totalcy);
         
-        // if(this.serviceType!='Manufacturing' && typeof this.totalcy!=='undefined' && this.totalcy!=='' && this.totalcy!==null){
-            
-        //     this.salesexpected=this.totalcy;
-        // }
-        // else if(typeof this.manufacturing==='undefined' || this.manufacturing==='' || this.manufacturing===null){
-            
-        //     //console.log('man1');
-        //     this.salesexpected=this.unitRate*this.qty;
-        // }
-        // else if(typeof this.manufacturing!=='undefined'){
-        //     //console.log('man2');
-        //     this.salesexpected=this.manufacturing;
-        // }
-    // }
-        if(typeof this.manufacturing!=='undefined' && this.manufacturing!=='' && this.manufacturing!==null){
-            //console.log('man2');
+       if(this.forecastType=='manufacturing'){
+        if(typeof this.manufacturing!='undefined' && this.manufacturing!='' && this.manufacturing!=null){
+        
             this.salesexpected=this.manufacturing;
         }
-    }
+        else if(typeof this.unitRate!='undefined' && this.unitRate!='' && this.unitRate!=null && typeof this.qty!='undefined' && this.qty!='' && this.qty!=null){
+        
+            //console.log('man1');
+            this.salesexpected=this.unitRate*this.qty;
+        }
+    else  if(this.prospectType!='Repeat Projects from Existing Customers (RE)' && (this.serviceType!='Manufacturing' && typeof this.totalcy!=='undefined' && this.totalcy!=='' && this.totalcy!==null)){
+        
+            this.salesexpected=this.totalcy;
+        }
+        
+        if(this.prospectType=='Repeat Projects from Existing Customers (RE)' && this.unitRate=='' && this.qty==''){
+            
+                this.salesexpected='';
+            }
+       }    
     if(this.forecastType=='laboratory'){
         if(typeof this.laboratory!=='undefined'){
             this.salesexpected=this.laboratory;
         }
     }
-
     /*if(typeof this.manufacturing==='undefined' && typeof this.laboratory==='undefined'){
         this.salesexpected=this.unitRate*this.qty;
     }else if(typeof this.manufacturing!=='undefined' && typeof this.laboratory!=='undefined'){
@@ -339,6 +344,11 @@ subscribeMC() {
         this.currentMonth = currentDate.getMonth();
         //console.log('12Came')
     //console.log('12Came'+this.manufacturing1)
+        
+    if(this.prospectType!='Repeat Projects from Existing Customers (RE)'){
+    
+         this.requiredValue=true;
+    }
     this.manufacturing=this.manufacturing1;
         this.q1=this.q1;
         this.q2=this.q2;
@@ -355,29 +365,29 @@ subscribeMC() {
         else if(this.calOption==this.currentYear){
               if(this.currentMonth>2 && this.currentMonth<6){
                 this.disableinput1 = true;
-                this.q2required=true;
-                this.q3required=true;
-                this.q4required=true;
+                //this.q2required=true;
+                //this.q3required=true;
+                //this.q4required=true;
              }else if(this.currentMonth>5 && this.currentMonth<9){
                 this.disableinput1 =true;
                 this.disableinput2 = true;
-                this.q3required=true;
-                this.q4required=true;
+                //this.q3required=true;
+                //this.q4required=true;
              }else if(this.currentMonth>8 && this.currentMonth<11){
                 this.disableinput1 = true;
                 this.disableinput2 = true;
                 this.disableinput3 = true;
-                this.q4required=true;
+                //this.q4required=true;
              }
         }else{
             this.disableinput1 = false;
             this.disableinput2 = false;
             this.disableinput3 = false;
             this.disableinput4 = false;
-            this.q1required=true;
-            this.q2required=true;
-                this.q3required=true;
-                this.q4required=true;
+            //this.q1required=true;
+            //this.q2required=true;
+              //  this.q3required=true;
+              //  this.q4required=true;
         }
         }
         if(this.q1!=0 && this.q1!='' && this.q1!=null && typeof this.q1!='undefined'){
@@ -385,10 +395,10 @@ subscribeMC() {
             this.disableinput2 = true;
             this.disableinput3 = true;
             this.disableinput4 = true;
-            this.q1required=true;
-                this.q2required=false;
-                    this.q3required=false;
-                    this.q4required=false;
+            //this.q1required=true;
+            //    this.q2required=false;
+            //        this.q3required=false;
+            //        this.q4required=false;
             }
             
             else if(this.q2!=0 && this.q2!='' && this.q2!=null && typeof this.q2!='undefined'){
@@ -396,10 +406,10 @@ subscribeMC() {
                 this.disableinput2 = false;
                 this.disableinput3 = true;
                 this.disableinput4 = true;
-                this.q1required=false;
-                    this.q2required=true;
-                        this.q3required=false;
-                        this.q4required=false;
+            //    this.q1required=false;
+            //        this.q2required=true;
+            //            this.q3required=false;
+            //            this.q4required=false;
                         }
                             
                             else if(this.q3!=0 && this.q3!='' && this.q3!=null && typeof this.q3!='undefined'){
@@ -407,20 +417,20 @@ subscribeMC() {
                 this.disableinput2 = true;
                 this.disableinput3 = false;
                 this.disableinput4 = true;
-                this.q1required=false;
-                    this.q2required=false;
-                        this.q3required=true;
-                        this.q4required=false;
+            //    this.q1required=false;
+             //       this.q2required=false;
+             //           this.q3required=true;
+             //           this.q4required=false;
                 }
                  else if(this.q4!=0 && this.q4!='' && this.q4!=null && typeof this.q4!='undefined'){
                 this.disableinput1 = true;
                 this.disableinput2 = true;
                 this.disableinput3 = true;
                 this.disableinput4 = false;
-                this.q1required=false;
-                    this.q2required=false;
-                        this.q3required=false;
-                        this.q4required=true;
+             //   this.q1required=false;
+             //       this.q2required=false;
+              //          this.q3required=false;
+              //          this.q4required=true;
                 }else{
                     this.enableFields();
                     }
@@ -430,10 +440,10 @@ subscribeMC() {
         this.disableinput2 = false;
         this.disableinput3 = false;
         this.disableinput4 = false;
-        this.q1required=true;
-            this.q2required=true;
-                this.q3required=true;
-                this.q4required=true;
+        this.q1required=false;
+            this.q2required=false;
+                this.q3required=false;
+                this.q4required=false;
     }
     q1Change(event){
         this.q1 = event.detail.value;
@@ -506,10 +516,10 @@ subscribeMC() {
             this.q2=null;
             this.q3=null;
             this.q4=null;
-            this.q1required=false;
-            this.q2required=false;
-                this.q3required=false;
-                this.q4required=false;
+            //this.q1required=false;
+            //this.q2required=false;
+             //   this.q3required=false;
+              //  this.q4required=false;
         }
         else if(this.selectedOption==this.currentYear){
               if(this.currentMonth>2 && this.currentMonth<6){
@@ -517,46 +527,46 @@ subscribeMC() {
                 this.disableinput2 = false;
             this.disableinput3 = false;
             this.disableinput4 = false;
-            this.q1required=false;
-            this.q2required=true;
-                this.q3required=true;
-                this.q4required=true;
+            //this.q1required=false;
+           // this.q2required=true;
+            //    this.q3required=true;
+            //    this.q4required=true;
             
              }else if(this.currentMonth>5 && this.currentMonth<9){
                 this.disableinput1 =true;
                 this.disableinput2 = true;
                 this.disableinput3 = false;
             this.disableinput4 = false;
-            this.q1required=false;
-            this.q2required=false;
-                this.q3required=true;
-                this.q4required=true;
+            //this.q1required=false;
+            //this.q2required=false;
+             //   this.q3required=true;
+              //  this.q4required=true;
             
-             }else if(this.currentMonth>8 && this.currentMonth<11){
+             }else if(this.currentMonth>8 && this.currentMonth<=11){
                 this.disableinput1 = true;
                 this.disableinput2 = true;
                 this.disableinput3 = true;
                 this.disableinput4 = false;
-                this.q1required=false;
-            this.q2required=false;
-                this.q3required=false;
-                this.q4required=true;
+               // this.q1required=false;
+           // this.q2required=false;
+            //    this.q3required=false;
+             //   this.q4required=true;
              }
         }else{
             this.disableinput1 = false;
             this.disableinput2 = false;
             this.disableinput3 = false;
             this.disableinput4 = false;
-            this.q1required=true;
-            this.q2required=true;
-                this.q3required=true;
-                this.q4required=true;
+            //this.q1required=true;
+            //this.q2required=true;
+             //   this.q3required=true;
+              //  this.q4required=true;
         }
     }
     @api
     validate() {
         let isValid = true;
-        if (this.selectedOption === '' || this.selectedOption==null || typeof this.selectedOption=='undefined') {
+        if (this.prospectType!='Repeat Projects from Existing Customers (RE)' && (this.selectedOption === '' || this.selectedOption==null || typeof this.selectedOption=='undefined')) {
             isValid=false;
         }
         let inputFields = this.template.querySelectorAll('lightning-input');
@@ -591,14 +601,23 @@ subscribeMC() {
             //console.log('valid--'+this.salesexpected);
             
             //this.salesexpected=this.salesexpected1;
+            console.log('total');
             console.log(total);
             console.log(this.salesexpected);
+
+            //alert(total);
+            //alert(this.salesexpected);
+            //return false;
             if(total>this.salesexpected){
                 isValid = false;
             }
             if(total<this.salesexpected){
                 isValid = false;
             }
+            if (this.salesexpected !== '' && this.salesexpected!==null && typeof this.salesexpected!=='undefined' && total !== '' && total!==null && total!=='undefined' &&  (this.selectedOption === '' || this.selectedOption==null || typeof this.selectedOption=='undefined')) {
+                isValid=false;
+            }
+            
             
         if (isValid) {
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments

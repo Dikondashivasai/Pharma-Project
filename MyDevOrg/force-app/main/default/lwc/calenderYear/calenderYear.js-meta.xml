@@ -16,6 +16,7 @@
         <targetConfig targets="lightning__FlowScreen">
             <property name="salesexpected" type="Integer" label="salesexpected"
                 description="To check error fired during flow navigation" />
+
             <property name="calendarOptions" type="String" label="calendarOptions"
                 description="To check error fired during flow navigation" />
             <property name="isErrorFromFlow" type="Boolean" label="isErrorFromFlow"
@@ -32,17 +33,19 @@
                 description="This will have the label name of the field" />
             <property name="forecastType" type="String" label="forecastType"
                 description="This will have the label name of the field" />
-                <property name="manufacturing" type="String" label="manufacturing"
+            <property name="manufacturing" type="String" label="manufacturing"
                 description="This will have the label name of the field" />
-                <property name="manufacturing1" type="Integer" label="manufacturing1"
+            <property name="manufacturing1" type="Integer" label="manufacturing1"
                 description="This will have the label name of the field" />
-                <property name="laboratory" type="Integer" label="laboratory"
+            <property name="laboratory" type="Integer" label="laboratory"
                 description="This will have the label name of the field" />
-                <property name="qty" type="Integer" label="qty"
+            <property name="qty" type="Integer" label="qty"
                 description="This will have the label name of the field" />
-                <property name="unitRate" type="Integer" label="unitRate"
+            <property name="unitRate" type="Integer" label="unitRate"
                 description="This will have the label name of the field" />
-                
+            <property name="prospectType" type="String" label="prospectType"
+                description="This will have the label name of the field" />
+
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

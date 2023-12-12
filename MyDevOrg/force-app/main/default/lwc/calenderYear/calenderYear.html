@@ -3,12 +3,13 @@
         <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12 slds-p-horizontal_x-small">
             
             <lightning-combobox
-            required
+            required={requiredValue}
             name="Calendar year"
             label="Calendar year"
             value={calOption}
             options={calendarOptions1}
-            onchange={handleChange}>
+            onchange={handleChange}
+            >
         </lightning-combobox>
         </div>
         <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_6-of-12 slds-p-horizontal_x-small"></div>
@@ -27,6 +28,7 @@
                 </div>
                 <p if:true={errorMessageHtml} style="color:#FF0000;">Calendar Year Qtly Revenue Split total should not be more then Calendar Year Sales Expected</p>
                 <p if:true={greaterErrorMessageHtml} style="color:#FF0000;">Calendar Year Qtly Revenue Split total should not be less then Calendar Year Sales Expected</p>
+                <p if:true={greaterErrorMessageHtml1} style="color:#FF0000;">Select Calendar Year</p>
         </div>
     
 </template>
