@@ -102,12 +102,20 @@ export default class GenericText extends LightningElement {
                 this.serviceType=message.messageToSend;
                 if(message.messageToSend!='Manufacturing'&&this.prospectType =='Repeat Projects from Existing Customers (RE)'&&message.messageToSend!='undefined'&&message.messageToSend!=''&&message.messageToSend!='null'){
                     if(this.labelName=='Unit Rate'){
+                        this.valueEntered=null;
                         this.isRequiredField=false;
-                        this.disableInput=true;
+                        this.disableInput=true;   
                 } 
                 if(this.labelName=='Qty (in Kgs)'){
+                    this.valueEntered=null;
                     this.isRequiredField=false;
-                    this.disableInput=true;
+                    this.disableInput=true; 
+                }
+                if(message.sourceSystem=='Manufacturing Component'){
+                    this.valueEntered=null;
+                }
+                if(this.labelName=='Laboratory Component'){
+                    this.isRequiredField=false;
                 }  
             }
             else if(this.labelName=='Unit Rate' || this.labelName=='Qty (in Kgs)'){
@@ -128,6 +136,9 @@ export default class GenericText extends LightningElement {
                     if(this.labelName=="Manufacturing Component") {
                         this.disableInput=true;
                         this.isRequiredField=false;
+                    }
+                    if(this.labelName=='Laboratory Component'||message.sourceSystem=='Laboratory Component'){
+                        this.isRequiredField=false;
                     }       
                     
                 }else{
@@ -137,7 +148,11 @@ export default class GenericText extends LightningElement {
                     if(this.labelName=="Total CY's Sales Expected"){
                         this.disableInput=false;
                         this.isRequiredField=true;
-                    }        
+                    } 
+                    if(this.labelName=='Laboratory Component'||message.sourceSystem=='Laboratory Component'){
+                        this.isRequiredField=true;
+                         console.log('message meeee+++++++');
+                    }       
                 }
                 //this.unitRate=message.messageToSend;
             }
@@ -153,7 +168,7 @@ export default class GenericText extends LightningElement {
             if(message.sourceSystem=='Laboratory Component'){
                 this.laboratory=message.messageToSend;
             }
-            
+
             if(message.sourceSystem=='Probability%' && message.messageToSend<75){
                 if(this.labelName=="Reasons"){
                     console.log('message.sourceSystem'+message.sourceSystem)
