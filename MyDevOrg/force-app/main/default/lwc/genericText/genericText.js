@@ -100,7 +100,7 @@ export default class GenericText extends LightningElement {
             if(message.sourceSystem=='serviceType'){
                 //this.valueEntered='';
                 this.serviceType=message.messageToSend;
-                if(message.messageToSend!='Manufacturing'&&this.prospectType =='Repeat Projects from Existing Customers (RE)'&&message.messageToSend!='undefined'&&message.messageToSend!=''&&message.messageToSend!='null'){
+                if(message.messageToSend!='Manufacturing' && this.prospectType!= 'Commercial Project from Existing Customer [CE]' && message.messageToSend != 'undefined'&&message.messageToSend!=''&&message.messageToSend!='null'){
                     if(this.labelName=='Unit Rate'){
                         this.valueEntered=null;
                         this.isRequiredField=false;
@@ -114,6 +114,9 @@ export default class GenericText extends LightningElement {
                 if(message.sourceSystem=='Manufacturing Component'){
                     this.valueEntered=null;
                 }
+               
+            }
+            if(message.messageToSend!='Manufacturing'){
                 if(this.labelName=='Laboratory Component'){
                     this.isRequiredField=false;
                 }  
@@ -149,10 +152,13 @@ export default class GenericText extends LightningElement {
                         this.disableInput=false;
                         this.isRequiredField=true;
                     } 
-                    if(this.labelName=='Laboratory Component'||message.sourceSystem=='Laboratory Component'){
-                        this.isRequiredField=true;
-                         console.log('message meeee+++++++');
-                    }       
+                    if(message.sourceSystem=='serviceType'&& message.messageToSend!= 'Manufacturing'&& message.sourceSystem!='null' && message.messageToSend != 'undefined' && message.messageToSend!='' && message.messageToSend!='null'){
+                        if(this.labelName=='Laboratory Component'){
+                            this.isRequiredField=true;
+                             console.log('message meeee+++++++');
+                        }    
+                    }
+                       
                 }
                 //this.unitRate=message.messageToSend;
             }

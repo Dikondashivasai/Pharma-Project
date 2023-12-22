@@ -138,7 +138,7 @@ renderedCallback() {
                 q4value=true;
             }
             }
-        if(this.prospectType!='Repeat Projects from Existing Customers (RE)' && (this.selectedOption==null || this.selectedOption=='' || typeof this.selectedOption=='undefined')){
+        if(this.prospectType=='Commercial Project from Existing Customer [CE]' && (this.selectedOption==null || this.selectedOption=='' || typeof this.selectedOption=='undefined')){
             let genericCmp = this.template.querySelector('lightning-combobox');
             genericCmp.reportValidity();
          
@@ -312,12 +312,12 @@ subscribeMC() {
             //console.log('man1');
             this.salesexpected=this.unitRate*this.qty;
         }
-    else  if(this.prospectType!='Repeat Projects from Existing Customers (RE)' && (this.serviceType!='Manufacturing' && typeof this.totalcy!=='undefined' && this.totalcy!=='' && this.totalcy!==null)){
+    else  if(this.prospectType=='Commercial Project from Existing Customer [CE]' && (this.serviceType!='Manufacturing' && typeof this.totalcy!=='undefined' && this.totalcy!=='' && this.totalcy!==null)){
         
             this.salesexpected=this.totalcy;
         }
         
-        if(this.prospectType=='Repeat Projects from Existing Customers (RE)' && this.unitRate=='' && this.qty==''){
+        if(this.prospectType!='Commercial Project from Existing Customer [CE]' && this.unitRate=='' && this.qty==''){
             
                 this.salesexpected='';
             }
@@ -345,9 +345,8 @@ subscribeMC() {
         //console.log('12Came')
     //console.log('12Came'+this.manufacturing1)
         
-    if(this.prospectType!='Repeat Projects from Existing Customers (RE)'){
-    
-         this.requiredValue=true;
+    if(this.prospectType=='Commercial Project from Existing Customer [CE]'){
+    this.requiredValue=true;
     }
     this.manufacturing=this.manufacturing1;
         this.q1=this.q1;
@@ -566,7 +565,7 @@ subscribeMC() {
     @api
     validate() {
         let isValid = true;
-        if (this.prospectType!='Repeat Projects from Existing Customers (RE)' && (this.selectedOption === '' || this.selectedOption==null || typeof this.selectedOption=='undefined')) {
+        if (this.prospectType=='Commercial Project from Existing Customer [CE]' && (this.selectedOption === '' || this.selectedOption==null || typeof this.selectedOption=='undefined')) {
             isValid=false;
         }
         let inputFields = this.template.querySelectorAll('lightning-input');
