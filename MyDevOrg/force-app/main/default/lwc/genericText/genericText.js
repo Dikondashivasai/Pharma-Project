@@ -194,27 +194,27 @@ export default class GenericText extends LightningElement {
             // console.log('1---'+this.labelName)
             if(message.sourceSystem=='Unit Rate' || message.sourceSystem=='Qty (in Kgs)'){
                 if(this.labelName=='Manufacturing Component'){
-                    this.valueEntered=this.unitRate*this.qty;
+                    this.valueEntered=(parseFloat(this.unitRate*this.qty)).toFixed(2);
                 }
             }
             if(message.sourceSystem=='Unit Rate' || message.sourceSystem=='Qty (in Kgs)'){
                 if(this.labelName=='Manufacturing Component'){
                     this.disableInput=true;
-                    this.manufacturing=this.unitRate*this.qty;
+                    this.manufacturing=(parseFloat(this.unitRate*this.qty)).toFixed(2);
                 }
             }
             if(message.sourceSystem=='Manufacturing Component' || message.sourceSystem=='Laboratory Component'){
             if(this.labelName=="Total CY's Sales Expected"){
                 if(this.manufacturing!=null && typeof this.manufacturing!='undefined' && this.laboratory!=null && typeof this.laboratory!='undefined'){
-                this.valueEntered=parseInt(this.manufacturing)+parseInt(this.laboratory)
+                this.valueEntered=(parseFloat(this.manufacturing)+parseFloat(this.laboratory)).toFixed(2);
                    this.valueEnteredNum =this.valueEntered;
                 }
                else  if(this.manufacturing!=null && typeof this.manufacturing!='undefined'){
-               this.valueEntered=parseInt(this.manufacturing)
+               this.valueEntered=parseFloat(this.manufacturing).toFixed(2);
                this.valueEnteredNum =this.valueEntered;
                }
                else  if(this.laboratory!=null && typeof this.laboratory!='undefined'){
-               this.valueEntered=parseInt(this.laboratory)
+               this.valueEntered=parseFloat(this.laboratory).toFixed(2);
                this.valueEnteredNum =this.valueEntered;
             }
             }
@@ -222,18 +222,18 @@ export default class GenericText extends LightningElement {
             if(message.sourceSystem=='Unit Rate' || message.sourceSystem=='Qty (in Kgs)'){
             if(this.labelName=="Total CY's Sales Expected" && this.serviceType=='Manufacturing'){
                 if((typeof this.manufacturing==='undefined' || this.manufacturing=='' || this.manufacturing==null  || this.manufacturing==null || this.manufacturing==0) && (typeof this.laboratory==='undefined' || this.laboratory=='' || this.laboratory==null  || this.laboratory==null || this.laboratory==0)){
-                    this.valueEntered=this.unitRate*this.qty;
+                    this.valueEntered=(parseFloat(this.unitRate*this.qty)).toFixed(2);
                     this.valueEnteredNum =this.valueEntered;
                 }else if((typeof this.manufacturing!=='undefined' && this.manufacturing!='' && this.manufacturing!=null && this.manufacturing!=0) && typeof this.laboratory!=='undefined'){
                    // console.log('1c');
-                    this.valueEntered=parseInt(this.manufacturing)+parseInt(this.laboratory);
+                    this.valueEntered=(parseFloat(this.manufacturing)+parseFloat(this.laboratory)).toFixed(2);
                     this.valueEnteredNum =this.valueEntered;
                 }else if((typeof this.manufacturing==='undefined' || this.manufacturing==''   || this.manufacturing==null || this.manufacturing==0) && (typeof this.laboratory!=='undefined' && this.laboratory!='' && this.laboratory!=null)){;
-                    this.valueEntered=parseInt(this.laboratory)+(this.unitRate*this.qty);
+                    this.valueEntered=parseFloat(this.laboratory)+(this.unitRate*this.qty);
                     this.valueEnteredNum =this.valueEntered;
                 }
                 else if(typeof this.manufacturing!=='undefined'){
-                    this.valueEntered=this.manufacturing;
+                    this.valueEntered=parseFloat(this.manufacturing).toFixed(2);
                     this.valueEnteredNum =this.valueEntered;
                 }
                 this.isErrorFromFlow=false;

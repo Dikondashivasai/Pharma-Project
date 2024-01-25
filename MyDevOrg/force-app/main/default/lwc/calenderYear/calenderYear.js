@@ -101,7 +101,6 @@ renderedCallback() {
              q4value=false;
             }
             else if(this.calOption==this.currentYear){
-                
                   if(this.currentMonth>2 && this.currentMonth<6){
                     q1value=false;
              q2value=true;
@@ -214,19 +213,19 @@ renderedCallback() {
             if(this.q1==null)
             q1=0
             else
-            q1=parseInt(this.q1);
+            q1=parseFloat(this.q1);
             if(this.q2==null)
             q2=0
             else
-            q2=parseInt(this.q2);
+            q2=parseFloat(this.q2);
             if(this.q3==null)
             q3=0
             else
-            q3=parseInt(this.q3);
+            q3=parseFloat(this.q3);
             if(this.q4==null)
             q4=0
             else 
-            q4=parseInt(this.q4);
+            q4=parseFloat(this.q4);
             var total=q1+q2+q3+q4;
             
             //console.log('total--'+total);
@@ -310,7 +309,7 @@ subscribeMC() {
         else if(typeof this.unitRate!='undefined' && this.unitRate!='' && this.unitRate!=null && typeof this.qty!='undefined' && this.qty!='' && this.qty!=null){
         
             //console.log('man1');
-            this.salesexpected=this.unitRate*this.qty;
+            this.salesexpected=(this.unitRate*this.qty).toFixed(2);;
         }
     else  if(this.prospectType=='Commercial Project from Existing Customer [CE]' && (this.serviceType!='Manufacturing' && typeof this.totalcy!=='undefined' && this.totalcy!=='' && this.totalcy!==null)){
         
@@ -582,19 +581,19 @@ subscribeMC() {
             if(this.q1==null)
             q1=0
             else
-            q1=parseInt(this.q1);
+            q1=parseFloat(this.q1);
             if(this.q2==null)
             q2=0
             else
-            q2=parseInt(this.q2);
+            q2=parseFloat(this.q2);
             if(this.q3==null)
             q3=0
             else
-            q3=parseInt(this.q3);
+            q3=parseFloat(this.q3);
             if(this.q4==null)
             q4=0
             else 
-            q4=parseInt(this.q4);
+            q4=parseFloat(this.q4);
             var total=q1+q2+q3+q4;
             //console.log('valid--'+total);
             //console.log('valid--'+this.salesexpected);
